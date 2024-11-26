@@ -3,7 +3,7 @@ import numpy as np
 
 # Caminho para o modelo treinado
 recognizer = cv2.face.LBPHFaceRecognizer_create()
-recognizer.read('trainer/trainer.yml')  # Carrega o modelo treinado
+recognizer.read('models/trainer.yml')  # Carrega o modelo treinado
 
 # Caminho para o classificador de face Haar
 cascadePath = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
