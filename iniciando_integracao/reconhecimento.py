@@ -32,10 +32,10 @@ def reconhece_rosto(frame):
 
         if confidence < 100:
             nome = names[id_]  # Nome associado ao ID
-            conf_texto = f"Confiança: {round(100 - confidence)}%"
+            conf_texto = f"Confidence: {round(100 - confidence)}%"
         else:
             nome = "Desconhecido"
-            conf_texto = "Confiança: Desconhecido"
+            conf_texto = "Confidence: Desconhecido"
 
         cv2.putText(frame, nome, (x + 5, y - 5), font, 1, (255, 255, 255), 2)
         cv2.putText(frame, conf_texto, (x + 5, y + h - 5), font, 1, (255, 255, 0), 1)
