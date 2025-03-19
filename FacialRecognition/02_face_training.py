@@ -47,5 +47,5 @@ faces, ids = getImagesAndLabels(path)
 recognizer.train(faces, np.array(ids))
 
 # Salvar o modelo treinado na pasta trainer/
-recognizer.write('trainer/trainer.yml')  # Salva o modelo treinado
+recognizer.write('../iniciando_integracao/trainer/trainer.yml')  # Salva o modelo treinado
 print("\n [INFO] {0} faces treinadas.".format(len(np.unique(ids))))  # Exibe a quantidade de IDs únicos treinados
