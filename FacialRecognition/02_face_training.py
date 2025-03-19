@@ -4,7 +4,7 @@ import os
 from PIL import Image
 
 # Caminho para as imagens de treinamento
-path = 'Fotos'  # A pasta onde as fotos de treinamento (riany, bruno, pedro, diogo) estão armazenadas
+path = os.path.join(os.path.dirname(__file__), 'Fotos')  # Caminho relativo à pasta FacialRecognition
 
 # Inicializando o reconhecedor LBPH e o detector de faces
 recognizer = cv2.face.LBPHFaceRecognizer_create()
@@ -44,8 +44,19 @@ def getImagesAndLabels(path):
 # Treinamento das faces
 print("\n [INFO] Treinando faces. Isso pode levar alguns segundos. Aguarde...")
 faces, ids = getImagesAndLabels(path)
+
+# Treinamento do modelo
 recognizer.train(faces, np.array(ids))
 
-# Salvar o modelo treinado na pasta trainer/
-recognizer.write('../iniciando_integracao/trainer/trainer.yml')  # Salva o modelo treinado
-print("\n [INFO] {0} faces treinadas.".format(len(np.unique(ids))))  # Exibe a quantidade de IDs únicos treinados
+# Caminho para salvar o modelo treinado
+trainer_dir = os.path.join(os.path.dirname(__file__), '..', 'iniciando_integracao', 'trainer')
+
+# Garantir que a pasta 'trainer' existe
+if not os.path.exists(trainer_dir):
+    os.makedirs(trainer_dir)
+
+# Salvar o modelo treinado na pasta 'trainer/'
+trainer_path = os.path.join(trainer_dir, 'trainer.yml')
+recognizer.write(trainer_path)  # Salva o modelo treinado
+print(f"\n [INFO] {len(np.unique(ids))} faces treinadas.")
+print(f"\n [INFO] Modelo salvo em: {trainer_path}")
