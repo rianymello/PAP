@@ -1,11 +1,21 @@
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 import json
 
+# Estilo escuro para fundo preto
+plt.style.use("dark_background")
+
+# Verificando o diretório de trabalho atual
+print("Diretório atual:", os.getcwd())
+
+# Defina o caminho para o arquivo JSON no mesmo diretório
+arquivo_json = os.path.join(os.getcwd(), 'Integracao_FrontBack', 'Treinamento_Modelo', 'reconhecimento_log.json')
+
 # Carregando os dados do arquivo JSON
-with open('reconhecimento_log.json', 'r') as file:
+with open(arquivo_json, 'r') as file:
     data = json.load(file)
 
 # Função para converter o tempo de permanência para segundos
@@ -36,30 +46,53 @@ table = table.rename(columns={'total_time_inside_hours': 'Tempo Total de Perman�
 
 # Criando a figura para os gráficos e a tabela
 fig, ax = plt.subplots(figsize=(10, 6))
+fig.patch.set_facecolor('black')  # Define o fundo da janela como preto
 
-# Tabela com os dados
+# Ajustando a cor do texto para branco e melhorando contraste
 ax.axis('tight')
 ax.axis('off')
-ax.table(cellText=table.values, colLabels=table.columns, loc='center', cellLoc='center', colColours=["#f5f5f5"] * len(table.columns))
+
+# Corrigindo as cores da tabela para garantir que o texto seja visível
+table_obj = ax.table(cellText=table.values, colLabels=table.columns, loc='center',
+         cellLoc='center', colColours=["#1f1f1f"] * len(table.columns),  # Fundo das colunas
+         cellColours=[['#1f1f1f']*len(table.columns)]*len(table),  # Fundo das células
+         rowLoc='center', colLoc='center')  # Garantir que o texto e a célula estejam centralizados
+
+# Ajustando o texto da tabela para branco
+for (i, j), cell in table_obj.get_celld().items():
+    if i == 0:  # Cor para as colunas
+        cell.set_text_props(color='white')
+    else:  # Cor para as células
+        cell.set_text_props(color='white')
+
+plt.show()
 
 # 1. Gráfico de Duração de Permanência (Bar Chart)
 plt.figure(figsize=(8, 6))
-sns.barplot(x='name', y='total_time_inside_hours', data=df, palette='viridis')
-plt.title('Duração Total de Permanência por Pessoa (Horas)')
-plt.xlabel('Nome')
-plt.ylabel('Tempo de Permanência (horas)')
+plt.gca().set_facecolor("black")  # Fundo preto dentro do gráfico
+sns.barplot(x='name', y='total_time_inside_hours', data=df, palette='Blues', hue='name', legend=False)
+plt.title('Duração Total de Permanência por Pessoa (Horas)', color='white')
+plt.xlabel('Nome', color='white')
+plt.ylabel('Tempo de Permanência (horas)', color='white')
+plt.xticks(color='white')
+plt.yticks(color='white')
 plt.show()
 
 # 2. Gráfico de Frequência de Saídas (Número de Saídas)
 plt.figure(figsize=(8, 6))
-sns.barplot(x='name', y='exit_count', data=df, palette='Blues')
-plt.title('Frequência de Saídas por Pessoa')
-plt.xlabel('Nome')
-plt.ylabel('Número de Saídas')
+plt.gca().set_facecolor("black")  # Fundo preto dentro do gráfico
+sns.barplot(x='name', y='exit_count', data=df, palette='Blues_r', hue='name', legend=False)
+plt.title('Frequência de Saídas por Pessoa', color='white')
+plt.xlabel('Nome', color='white')
+plt.ylabel('Número de Saídas', color='white')
+plt.xticks(color='white')
+plt.yticks(color='white')
 plt.show()
 
 # 3. Gráfico de Pizza de Proporção de Tempo de Permanência
 plt.figure(figsize=(8, 6))
-plt.pie(df['total_time_inside_hours'], labels=df['name'], autopct='%1.1f%%', startangle=90, colors=sns.color_palette("Set3", len(df)))
-plt.title('Proporção do Tempo de Permanência por Pessoa')
+plt.gca().set_facecolor("black")  # Fundo preto dentro do gráfico
+plt.pie(df['total_time_inside_hours'], labels=df['name'], autopct='%1.1f%%', startangle=90, 
+        colors=sns.color_palette("Blues", len(df)), textprops={'color': 'white'})
+plt.title('Proporção do Tempo de Permanência por Pessoa', color='white')
 plt.show()
