@@ -1,3 +1,4 @@
+import json
 import cv2
 import numpy as np
 import os
@@ -29,26 +30,48 @@ cam.set(4, 480)  # Altura do vídeo
 minW = 0.08 * cam.get(3)  # Ajustado para detecção de rostos menores
 minH = 0.08 * cam.get(4)
 
-# 🔹 Função para registrar o log de reconhecimento (apenas eventos importantes)
+# 🔹 Inicializar variáveis para registrar o tempo de entrada e saída
+entry_time = None
+session_data = []  # Lista para armazenar os dados de entrada/saída
+
+# 🔹 Função para registrar o log de reconhecimento e salvar no JSON
 def log_recognition(event, name=None, confidence_value=None):
+    global entry_time  # Declarando entry_time como global antes de usá-la
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_message = ""
     
     if event == "entrou":
+        # Registra o horário de entrada
+        entry_time = datetime.datetime.now()  # Atualiza entry_time global
         log_message = f"{current_time} - {name} entrou"
-    elif event == "saiu":
-        log_message = f"{current_time} - {name} saiu"
-    
-    with open("reconhecimento_log.txt", "a") as log_file:
-        log_file.write(log_message + "\n")
+    elif event == "saiu" and entry_time is not None:
+        # Registra o horário de saída e calcula o tempo dentro da sala
+        exit_time = datetime.datetime.now()
+        time_inside = exit_time - entry_time
+        log_message = f"{current_time} - {name} saiu. Tempo dentro da sala: {time_inside}"
+        
+        # Armazenando os dados no formato JSON
+        session_data.append({
+            'name': name,
+            'entry_time': entry_time.strftime("%Y-%m-%d %H:%M:%S"),
+            'exit_time': exit_time.strftime("%Y-%m-%d %H:%M:%S"),
+            'time_inside': str(time_inside)
+        })
+
+        # Salvando os dados no arquivo JSON dentro da pasta atual
+        json_file_path = os.path.join(os.path.dirname(__file__), 'reconhecimento_log.json')
+        with open(json_file_path, "w") as json_file:
+            json.dump(session_data, json_file, indent=4)
+        
+    # Exibindo o log apenas no terminal
     print(f"[LOG] {log_message}")
 
 # 🔹 Variáveis de controle de tempo de log
 last_log_time = datetime.datetime.now()
-recognized_last_time = None
+recognized_last_time = {}
 
 # Posições anteriores para movimento (direita / esquerda)
-last_position_x = None
+last_position_x = {}
 
 while True:
     ret, img = cam.read()  # Ler o frame da câmera
@@ -63,8 +86,6 @@ while True:
         minSize=(int(minW), int(minH)),
     )
 
-    recognized_this_frame = False  # Flag para saber se algum rosto foi reconhecido neste frame
-
     for (x, y, w, h) in faces:
         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)  # Desenhar um retângulo na face
 
@@ -77,7 +98,6 @@ while True:
         # 🔹 Verificação da confiabilidade do reconhecimento
         if confidence_value >= 40:  # Ajuste para reconhecer apenas com confiança suficiente
             id = names[id]  # Pegar nome correspondente
-            recognized_this_frame = True  # Rosto reconhecido neste frame
         else:
             id = "Desconhecido"
 
@@ -85,29 +105,26 @@ while True:
         cv2.putText(img, str(id), (x + 5, y - 5), font, 1, (255, 255, 255), 2)
         cv2.putText(img, f"{confidence_value}%", (x + 5, y + h - 5), font, 1, (255, 255, 0), 1)
 
-        # 🔹 Se Riany foi reconhecida
-        if id == "Riany":
+        # 🔹 Verificação do movimento para todas as pessoas reconhecidas
+        if id != "Desconhecido":
             center_x = x + w // 2  # Posição centralizada do rosto (x)
-            if last_position_x is None:
-                last_position_x = center_x  # Inicializa a posição anterior
 
-            # Detecta movimento de esquerda para direita
-            if center_x > last_position_x + 200: 
-                if recognized_last_time != "Riany":
-                    log_recognition("entrou", "Riany", confidence_value)
-                    recognized_last_time = "Riany"
-                last_position_x = center_x
+            # Se for a primeira vez que vemos esse rosto
+            if id not in last_position_x:
+                last_position_x[id] = center_x
+                recognized_last_time[id] = None
 
-            # Detecta movimento de direita para esquerda
-            elif center_x < last_position_x - 200:
-                if recognized_last_time == "Riany":
-                    log_recognition("saiu", "Riany", confidence_value)
-                    recognized_last_time = None
-                last_position_x = center_x
+            # Detecta movimento de entrada (esquerda para direita)
+            if center_x > last_position_x[id] + 200 and recognized_last_time[id] != id:
+                log_recognition("entrou", id, confidence_value)
+                recognized_last_time[id] = id  # Atualiza o último reconhecimento
+                last_position_x[id] = center_x
 
-    # 🔹 Se nenhum rosto foi reconhecido no frame atual
-    if not recognized_this_frame and recognized_last_time is not None:
-        recognized_last_time = None  # Riany foi desconectada ou está fora da tela
+            # Detecta movimento de saída (direita para esquerda)
+            elif center_x < last_position_x[id] - 200 and recognized_last_time[id] == id:
+                log_recognition("saiu", id, confidence_value)
+                recognized_last_time[id] = None
+                last_position_x[id] = center_x
 
     # 🔹 Mostrar imagem com detecção
     cv2.imshow('camera', img)

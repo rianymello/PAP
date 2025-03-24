@@ -1,0 +1,65 @@
+[
+    {
+        "name": "Riany",
+        "entries": [
+            {
+                "entry_time": "2025-03-23 14:05:22",
+                "exit_time": "2025-03-23 17:06:47",
+                "time_inside": "3:01:25"
+            },
+            {
+                "entry_time": "2025-03-23 17:15:00",
+                "exit_time": "2025-03-23 19:10:30",
+                "time_inside": "1:55:30"
+            },
+            {
+                "entry_time": "2025-03-23 19:30:00",
+                "exit_time": "2025-03-23 21:00:00",
+                "time_inside": "1:30:00"
+            }
+        ],
+        "total_time_inside": "6:27:55",
+        "exit_count": 3
+    },
+    {
+        "name": "Pedro",
+        "entries": [
+            {
+                "entry_time": "2025-03-23 14:12:43",
+                "exit_time": "2025-03-23 17:09:58",
+                "time_inside": "3:00:15"
+            }
+        ],
+        "total_time_inside": "3:00:15",
+        "exit_count": 1
+    },
+    {
+        "name": "Diogo",
+        "entries": [
+            {
+                "entry_time": "2025-03-23 14:22:15",
+                "exit_time": "2025-03-23 16:21:05",
+                "time_inside": "2:00:50"
+            },
+            {
+                "entry_time": "2025-03-23 16:30:00",
+                "exit_time": "2025-03-23 18:30:15",
+                "time_inside": "2:00:15"
+            }
+        ],
+        "total_time_inside": "4:01:05",
+        "exit_count": 2
+    },
+    {
+        "name": "Bruno",
+        "entries": [
+            {
+                "entry_time": "2025-03-23 14:30:59",
+                "exit_time": "2025-03-23 15:28:47",
+                "time_inside": "0:57:48"
+            }
+        ],
+        "total_time_inside": "0:57:48",
+        "exit_count": 1
+    }
+]
