@@ -5,9 +5,9 @@ from PIL import Image, ImageEnhance
 
 # Caminhos para as imagens originais e melhoradas
 input_path = os.path.join(os.path.dirname(__file__), 'Fotos')
-output_path = os.path.join(os.path.dirname(__file__), 'Fotos-Melhoradas')
+output_path = os.path.join(os.path.dirname(__file__), '..', 'Integracao_FrontBack', 'Treinamento_Modelo', 'Fotos-melhoradas')
 
-# Limpar a pasta de saída (Fotos-Melhoradas) antes de salvar as novas imagens
+# Limpar a pasta de saída (Fotos-melhoradas) antes de salvar as novas imagens
 if os.path.exists(output_path):
     for file in os.listdir(output_path):
         file_path = os.path.join(output_path, file)
@@ -61,4 +61,4 @@ for filename in os.listdir(input_path):
     if os.path.isfile(file_path):
         melhorar_imagem(file_path)
 
-print("\n[INFO] Processamento concluído! As imagens melhoradas estão em 'Fotos-Melhoradas'.")
+print("\n[INFO] Processamento concluído! As imagens melhoradas estão em 'Integracao_FrontBack/Treinamento_Modelo/Fotos-melhoradas'.")
