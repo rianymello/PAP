@@ -15,6 +15,7 @@ def getImagesAndLabels(path):
     imagePaths = [os.path.join(path, f) for f in os.listdir(path)]  # Pega todos os arquivos da pasta
     faceSamples = []
     ids = []
+    photo_counts = {0: 0, 1: 0, 2: 0, 3: 0}  # Dicionário para contar fotos por pessoa
 
     for imagePath in imagePaths:
         # Abrir a imagem e converter para escala de cinza
@@ -38,12 +39,25 @@ def getImagesAndLabels(path):
             for (x, y, w, h) in faces:
                 faceSamples.append(img_numpy[y:y+h, x:x+w])
                 ids.append(id)
+                photo_counts[id] += 1  # Incrementar a contagem de fotos da pessoa
 
-    return faceSamples, ids
+    return faceSamples, ids, photo_counts
 
 # Treinamento das faces
 print("\n [INFO] Treinando faces. Isso pode levar alguns segundos. Aguarde...")
-faces, ids = getImagesAndLabels(path)
+faces, ids, photo_counts = getImagesAndLabels(path)
+
+# Exibindo o número de fotos para cada pessoa
+print("\n[INFO] Quantidade de fotos para cada pessoa:")
+for id, count in photo_counts.items():
+    if id == 0:
+        print(f"Riany: {count} fotos")
+    elif id == 1:
+        print(f"Bruno: {count} fotos")
+    elif id == 2:
+        print(f"Pedro: {count} fotos")
+    elif id == 3:
+        print(f"Diogo: {count} fotos")
 
 # Treinamento do modelo
 recognizer.train(faces, np.array(ids))

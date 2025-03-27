@@ -20,22 +20,33 @@ with open(arquivo_json, 'r') as file:
 
 # Função para converter o tempo de permanência para segundos
 def time_to_seconds(time_str):
-    time_obj = datetime.strptime(time_str, '%H:%M:%S')
-    return time_obj.hour * 3600 + time_obj.minute * 60 + time_obj.second
+    if not time_str:  # Verifica se time_str é None ou string vazia
+        return 0
+    try:
+        time_obj = datetime.strptime(time_str, '%H:%M:%S.%f')  # Considera milissegundos
+        return time_obj.hour * 3600 + time_obj.minute * 60 + time_obj.second + time_obj.microsecond / 1_000_000
+    except ValueError:
+        print(f"Erro ao converter '{time_str}' para segundos. Definindo como 0.")
+        return 0  # Caso haja erro na conversão, assume 0 segundos
 
 # Preparando a lista para análise
 people_data = []
 
 # Processando os dados de cada pessoa
 for person in data:
-    total_time = sum(time_to_seconds(entry['time_inside']) for entry in person['entries'])
-    entry_count = len(person['entries'])
+    total_time = sum(time_to_seconds(entry.get('time_inside')) for entry in person.get('entries', []))  # Verifica se existe 'entries'
+    entry_count = len(person.get('entries', []))  # Contagem de saídas
     person['total_time_inside_seconds'] = total_time
     person['exit_count'] = entry_count
     people_data.append(person)
 
 # Convertendo para DataFrame
 df = pd.DataFrame(people_data)
+
+# Evita erro caso o DataFrame esteja vazio
+if df.empty:
+    print("Nenhum dado encontrado no arquivo JSON. O script será encerrado.")
+    exit()
 
 # Calculando o tempo total de permanência em horas e adicionando ao DataFrame
 df['total_time_inside_hours'] = df['total_time_inside_seconds'] / 3600
