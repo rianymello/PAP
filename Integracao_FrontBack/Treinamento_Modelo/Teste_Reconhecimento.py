@@ -5,7 +5,7 @@ import os
 import datetime
 
 recognizer = cv2.face.LBPHFaceRecognizer_create(radius=2, neighbors=10, grid_x=8, grid_y=8)
-trainer_path = os.path.join(os.path.dirname(__file__), 'Treiner', 'trainer.yml')
+trainer_path = os.path.join(os.path.dirname(__file__), 'Trainer', 'trainer.yml')
 recognizer.read(trainer_path)
 
 cascadePath = os.path.join(cv2.data.haarcascades, "haarcascade_frontalface_default.xml")

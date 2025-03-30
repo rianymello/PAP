@@ -4,8 +4,8 @@ import { useState, useRef, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Send, Smile } from "lucide-react"
+import { io } from "socket.io-client"
 
-// Define message types for better type safety
 type MessageType = "system" | "user"
 
 interface Message {
@@ -17,33 +17,29 @@ interface Message {
 
 export default function ChatWindow() {
   const [message, setMessage] = useState("")
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      content: "Bia entrou na sala",
-      type: "system",
-      timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-    },
-    {
-      id: "2",
-      content: "Bia saiu da sala",
-      type: "system",
-      timestamp: new Date(Date.now() - 1000 * 60 * 20), // 20 minutes ago
-    },
-    {
-      id: "3",
-      content: "Lucas entrou na sala",
-      type: "system",
-      timestamp: new Date(Date.now() - 1000 * 60 * 5), // 5 minutes ago
-    },
-  ])
-
+  const [messages, setMessages] = useState<Message[]>([])
   const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  const socket = useRef(io("http://localhost:5000"))
 
   // Scroll to bottom when messages change
   useEffect(() => {
     scrollToBottom()
-  }, [messages])
+
+    socket.current.on('chat_message', (data: { content: string }) => {
+      const newMessage: Message = {
+        id: Date.now().toString(),
+        content: data.content,
+        type: "system",
+        timestamp: new Date(),
+      }
+      setMessages((prevMessages) => [...prevMessages, newMessage])
+    })
+
+    return () => {
+      socket.current.disconnect()
+    }
+  }, [])
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -51,7 +47,7 @@ export default function ChatWindow() {
 
   const handleSendMessage = () => {
     if (message.trim()) {
-      // Add new message to the messages array
+      // Adiciona nova mensagem ao estado
       const newMessage: Message = {
         id: Date.now().toString(),
         content: message,
@@ -60,11 +56,11 @@ export default function ChatWindow() {
       }
 
       setMessages([...messages, newMessage])
-      setMessage("") // Clear input field
+      setMessage("") // Limpa o campo de entrada
     }
   }
 
-  // Format timestamp to readable time
+  // Formatar o timestamp para exibir de forma legível
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
   }
@@ -126,4 +122,3 @@ export default function ChatWindow() {
     </div>
   )
 }
-

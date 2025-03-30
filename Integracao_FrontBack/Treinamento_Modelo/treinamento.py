@@ -63,7 +63,7 @@ for id, count in photo_counts.items():
 recognizer.train(faces, np.array(ids))
 
 # Caminho para salvar o modelo treinado (somente dentro de 'Treiner', sem duplicação)
-treiner_dir = os.path.join(os.path.dirname(__file__), 'Treiner')
+treiner_dir = os.path.join(os.path.dirname(__file__), 'Trainer')
 
 # Não precisamos criar a pasta, pois ela já existe. Apenas garantir que ela seja acessada corretamente.
 trainer_path = os.path.join(treiner_dir, 'trainer.yml')

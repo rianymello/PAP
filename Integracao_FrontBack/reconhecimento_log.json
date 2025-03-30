@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Riany",
+        "entries": [
+            {
+                "entry_time": "2025-03-27 16:23:39",
+                "exit_time": null,
+                "time_inside": null
+            },
+            {
+                "entry_time": "2025-03-27 16:23:39",
+                "exit_time": "2025-03-27 16:23:39",
+                "time_inside": "0:00:00.411080"
+            },
+            {
+                "entry_time": "2025-03-27 16:23:39",
+                "exit_time": null,
+                "time_inside": null
+            }
+        ]
+    },
+    {
+        "name": "Pedro",
+        "entries": [
+            {
+                "entry_time": "2025-03-27 16:25:30",
+                "exit_time": null,
+                "time_inside": null
+            }
+        ]
+    },
+    {
+        "name": "Bruno",
+        "entries": [
+            {
+                "entry_time": "2025-03-27 16:24:16",
+                "exit_time": null,
+                "time_inside": null
+            },
+            {
+                "entry_time": "2025-03-27 16:24:16",
+                "exit_time": null,
+                "time_inside": null
+            },
+            {
+                "entry_time": "2025-03-27 16:24:16",
+                "exit_time": null,
+                "time_inside": null
+            },
+            {
+                "entry_time": "2025-03-27 16:25:27",
+                "exit_time": null,
+                "time_inside": null
+            },
+            {
+                "entry_time": "2025-03-27 16:25:27",
+                "exit_time": null,
+                "time_inside": null
+            }
+        ]
+    }
+]

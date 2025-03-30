@@ -1,0 +1,31 @@
+{
+    "Riany": [
+        {
+            "entry_time": "2025-03-31 00:28:44",
+            "exit_time": "2025-03-31 00:29:49",
+            "time_inside": "0:01:04.647929"
+        },
+        {
+            "entry_time": "2025-03-31 00:29:49",
+            "exit_time": "2025-03-31 00:29:56",
+            "time_inside": "0:00:07.021792"
+        },
+        {
+            "entry_time": "2025-03-31 00:29:59",
+            "exit_time": null,
+            "time_inside": null
+        }
+    ],
+    "Desconhecido": [
+        {
+            "entry_time": "2025-03-31 00:29:36",
+            "exit_time": "2025-03-31 00:29:58",
+            "time_inside": "0:00:21.991998"
+        },
+        {
+            "entry_time": "2025-03-31 00:29:59",
+            "exit_time": null,
+            "time_inside": null
+        }
+    ]
+}
