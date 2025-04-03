@@ -1,0 +1,11 @@
+Pasta: C:\Users\mello\Desktop\ReconhecimentoFacial
+  Arquivo: C:\Users\mello\Desktop\ReconhecimentoFacial\requirements.txt
+Pasta: C:\Users\mello\Desktop\ReconhecimentoFacial\docs
+  Arquivo: C:\Users\mello\Desktop\ReconhecimentoFacial\docs\README.md
+Pasta: C:\Users\mello\Desktop\ReconhecimentoFacial\models
+  Arquivo: C:\Users\mello\Desktop\ReconhecimentoFacial\models\mmod_human_face_detector.dat
+Pasta: C:\Users\mello\Desktop\ReconhecimentoFacial\models\trainer
+  Arquivo: C:\Users\mello\Desktop\ReconhecimentoFacial\models\trainer\trainer.pkl
+Pasta: C:\Users\mello\Desktop\ReconhecimentoFacial\src
+  Arquivo: C:\Users\mello\Desktop\ReconhecimentoFacial\src\logs.json
+  Arquivo: C:\Users\mello\Desktop\ReconhecimentoFacial\src\ReconhecimentoFacialFinal.py
